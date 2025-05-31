@@ -1,0 +1,5 @@
+{
+  "ConectioStrings": {
+    "DefaultConnection": "Data Source = EfDemo.db"
+  }
+}
