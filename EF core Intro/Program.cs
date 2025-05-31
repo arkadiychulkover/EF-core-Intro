@@ -54,21 +54,15 @@ namespace EF_core_Intro
                             CreateSubject(dbContext);
                             break;
                         case "9":
-                            AddSubjectToTeacher(dbContext);
-                            break;
-                        case "10":
-                            AddTeacherToCafedra(dbContext);
-                            break;
-                        case "11":
                             ReadAllData(dbContext);
                             break;
-                        case "12":
+                        case "10":
                             ReadAllGroups(dbContext);
                             break;
-                        case "13":
+                        case "11":
                             AddGroup(dbContext);
                             break;
-                        case "14":
+                        case "12":
                             return;
                         default:
                             Console.WriteLine("Invalid choice, please try again.");
@@ -293,54 +287,6 @@ namespace EF_core_Intro
             dbContext.Subjects.Add(subject);
             dbContext.SaveChanges();
         }
-
-        public static void AddSubjectToTeacher(AppDBContext dbContext)
-        {
-            Console.WriteLine("Enter teacher ID:");
-            int teacherId = int.Parse(Console.ReadLine());
-            Teacher? teacher = dbContext.Teachers.Include(t => t.Subjects).FirstOrDefault(t => t.Id == teacherId);
-            if (teacher != null)
-            {
-                Console.WriteLine("Enter subject name:");
-                string subjectName = Console.ReadLine();
-                Subject subject = new Subject { Name = subjectName, TeacherId = teacherId };
-                teacher.Subjects.Add(subject);
-                dbContext.SaveChanges();
-                Console.WriteLine("Subject added to teacher successfully.");
-            }
-            else
-            {
-                Console.WriteLine("Teacher not found.");
-            }
-        }
-
-        public static void AddTeacherToCafedra(AppDBContext dbContext)
-        {
-            Console.WriteLine("Enter teacher ID:");
-            int teacherId = int.Parse(Console.ReadLine());
-            Teacher? teacher = dbContext.Teachers.FirstOrDefault(t => t.Id == teacherId);
-            if (teacher != null)
-            {
-                Console.WriteLine("Enter cafedra ID:");
-                int cafedraId = int.Parse(Console.ReadLine());
-                Cafedra? cafedra = dbContext.Cafedras.FirstOrDefault(c => c.Id == cafedraId);
-                if (cafedra != null)
-                {
-                    teacher.CafedraId = cafedraId;
-                    dbContext.SaveChanges();
-                    Console.WriteLine("Teacher added to cafedra successfully.");
-                }
-                else
-                {
-                    Console.WriteLine("Cafedra not found.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Teacher not found.");
-            }
-        }
-
         public static void ReadAllData(AppDBContext dbContext)
         {
             var students = dbContext.Students.Include(s => s.Group).Include(s => s.Pasport).ToList();
