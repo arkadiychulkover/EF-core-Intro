@@ -225,6 +225,35 @@ namespace EF_core_Intro
             teacher.Name = Console.ReadLine();
             Console.WriteLine("Enter teacher salary:");
             teacher.Salary = decimal.Parse(Console.ReadLine());
+            Console.WriteLine("Enter teacher age:");
+            teacher.Age = int.Parse(Console.ReadLine());
+            Console.WriteLine("Enter cafedra ID (or leave empty to create a new one):");
+            string cafedraIdInput = Console.ReadLine();
+            if(cafedraIdInput != null)
+            {
+                if (int.TryParse(cafedraIdInput, out int cafedraId))
+                {
+                    Cafedra? cafedra = dbContext.Cafedras.FirstOrDefault(c => c.Id == cafedraId);
+                    if (cafedra != null)
+                    {
+                        teacher.CafedraId = cafedraId;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Cafedra not found. Creating new one.");
+                        CreateCafedra(dbContext);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Cafedra ID. Creating new one.");
+                    CreateCafedra(dbContext);
+                }
+            }
+            else
+            {
+                CreateCafedra(dbContext);
+            }
             dbContext.Teachers.Add(teacher);
             dbContext.SaveChanges();
         }
